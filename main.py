@@ -1,27 +1,28 @@
+#nova atualizacao
+
+#bibliotecas que utilizei ]
 import pyautogui
 import time
 import pandas as pd
 
-# configuration constants
+# variaveis para salvar as informacoes
 EMAIL = "dev@gmail.com"
 PASSWORD = "sua senha"
 LOGIN_URL = "https://dlp.hashtagtreinamentos.com/python/intensivao/login"
 CSV_PATH = "registrodeprodutos.csv"
 
-# screen coordinates (x, y) for the fields/butto
-# ns used by the automation
+# coordenadas da tela para clicar nos campos
 COORDS = {
     "email_field": (730, 397),
-    "first_code_field": (653, 294),
+    "first_code_field": (714, 277), 
 }
 
-# adjust PyAutoGUI behaviour
-pyautogui.FAILSAFE = True  # move mouse to upper-left to abort
-pyautogui.PAUSE = 0.5  # short pause after each call
 
+pyautogui.FAILSAFE = True  
+pyautogui.PAUSE = 1  # pausa para cada comando
 
 def open_browser():
-    """Start the browser and navigate to the login page."""
+    """inciar o navegador e abrir pagina de login"""
     pyautogui.press("win")
     pyautogui.write("opera")
     pyautogui.press("enter")
@@ -32,7 +33,7 @@ def open_browser():
 
 
 def login():
-    """Perform the user login sequence."""
+    """fazer login."""
     pyautogui.click(*COORDS["email_field"])
     pyautogui.write(EMAIL)
     pyautogui.press("tab")
@@ -43,8 +44,6 @@ def login():
 
 
 def fill_row(row: pd.Series):
-    """Fill a single product row on the form."""
-    # focus first field so tabs work predictably
     pyautogui.click(*COORDS["first_code_field"])
 
     for col in ["codigo", "marca", "tipo", "categoria", "preco_unitario", "custo", "obs"]:
@@ -56,7 +55,7 @@ def fill_row(row: pd.Series):
         pyautogui.press("tab")
 
     pyautogui.press("enter")
-    # scroll back to top so next iteration starts at the same place
+    # dar um scroll de volta ao topo
     pyautogui.scroll(5000)
 
 
